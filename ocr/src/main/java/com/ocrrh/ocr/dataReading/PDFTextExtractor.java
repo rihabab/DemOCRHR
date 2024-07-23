@@ -1,13 +1,10 @@
-package com.ocrrh.ocr.processing;
+package com.ocrrh.ocr.dataReading;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
-import java.io.File;
+
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import net.sourceforge.tess4j.ITesseract;
@@ -18,7 +15,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Core;
-//import org.opencv.core.Size;
+
 import org.opencv.imgproc.Imgproc;
 
 public class PDFTextExtractor {
@@ -34,7 +31,7 @@ public class PDFTextExtractor {
             tesseract.setDatapath("C:\\Users\\TFRY2424\\AppData\\Local\\Programs\\Tesseract-OCR\\tessdata");
             tesseract.setLanguage("fra"); // Set French language
             tesseract.setVariable("user_defined_dpi", "300");
-            //tesseract.setOcrEngineMode(ITesseract.OEM_LSTM_ONLY);
+
             tesseract.setPageSegMode(6); // Assume a single uniform block of text
 
             for (int page = 0; page < document.getNumberOfPages(); page++) {

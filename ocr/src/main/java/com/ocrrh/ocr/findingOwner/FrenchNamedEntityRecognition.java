@@ -1,14 +1,11 @@
-package com.ocrrh.ocr.processing;
+package com.ocrrh.ocr.findingOwner;
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.util.*;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+
 import java.util.stream.Collectors;
 
 public class FrenchNamedEntityRecognition {
@@ -24,6 +21,7 @@ public class FrenchNamedEntityRecognition {
     }
 
     public List<String> identifyEntities(String text) {
+
         CoreDocument document = new CoreDocument(text);
         pipeline.annotate(document);
         List<String> entities = new ArrayList<>();
@@ -45,18 +43,29 @@ public class FrenchNamedEntityRecognition {
                     }
                 }
             }
-            // Add the last person name if the sentence ends with a PERSON entity
+
             if (personName.length() > 0) {
                 entities.add(personName.toString());
                 personName.setLength(0);
             }
         }
+
         return entities;
     }
     public List<String> cleaningEntities(List<String> entities){
         return entities.stream()
                 .map(s -> s.replaceFirst("^(Monsieur|Mme)\\s+", ""))
                 .collect(Collectors.toList());
+    }
+    public List entitiesPrepare(List<String> entities){
+        List entitiesPro = new ArrayList();
+        for (int i = 0; i < entities.size(); i++) {
+            List<String> ent = Arrays.stream(entities.get(i).split(" "))
+                    .filter(word -> !word.isEmpty())
+                    .collect(Collectors.toList());
+            entitiesPro.add(ent);
+        }
+        return entitiesPro;
     }
 
 
