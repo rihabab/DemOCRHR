@@ -1,6 +1,8 @@
 package com.ocrrh.ocr.services;
 
+import com.ocrrh.ocr.docClassification.DocClassifier;
 import com.ocrrh.ocr.entites.Employee;
+import com.ocrrh.ocr.exceptions.DocumentNotClassifiedException;
 import com.ocrrh.ocr.findingOwner.FrenchNamedEntityRecognition;
 import com.ocrrh.ocr.dataReading.PDFTextExtractor;
 import com.ocrrh.ocr.repositories.EmployeeRepository;
@@ -59,7 +61,7 @@ public class EmployeeService {
         InputStream inputStream = file.getInputStream();
 
         PDDocument document = PDDocument.load(inputStream);
-        String fileName = file.getOriginalFilename();
+        String fileName ;
 
         try {
 
@@ -69,6 +71,7 @@ public class EmployeeService {
             List<String> entities = ner.identifyEntities(text);
             List<String> entitiesr = ner.cleaningEntities(entities);
             List entitiespro = ner.entitiesPrepare(entitiesr);
+            fileName= DocClassifier.findStringsInText(text);
             for (String entity : entitiesr) {
                 log.info("Found PERSON entity: ");
                 log.info(entity);
@@ -77,6 +80,8 @@ public class EmployeeService {
             log.info(entitiespro.toString());
         } catch (TesseractException e) {
             throw new RuntimeException(e);
+        } catch (DocumentNotClassifiedException e) {
+            fileName = file.getOriginalFilename();
         } finally {
 
             document.close();
