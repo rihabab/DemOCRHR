@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-@Slf4j
 @Service
 public class EmployeeService {
 
@@ -56,39 +55,7 @@ public class EmployeeService {
             return false;
         }
     }
-    public String processPdf(MultipartFile file) throws IOException {
 
-        InputStream inputStream = file.getInputStream();
-
-        PDDocument document = PDDocument.load(inputStream);
-        String fileName ;
-
-        try {
-
-            String text = PDFTextExtractor.extractTextFromPDF(document);
-            log.info(text);
-            FrenchNamedEntityRecognition ner = new FrenchNamedEntityRecognition();
-            List<String> entities = ner.identifyEntities(text);
-            List<String> entitiesr = ner.cleaningEntities(entities);
-            List entitiespro = ner.entitiesPrepare(entitiesr);
-            fileName= DocClassifier.findStringsInText(text);
-            for (String entity : entitiesr) {
-                log.info("Found PERSON entity: ");
-                log.info(entity);
-
-            }
-            log.info(entitiespro.toString());
-        } catch (TesseractException e) {
-            throw new RuntimeException(e);
-        } catch (DocumentNotClassifiedException e) {
-            fileName = file.getOriginalFilename();
-        } finally {
-
-            document.close();
-        }
-
-        return "File uploaded successfully: " + fileName;
-    }
 
 
 

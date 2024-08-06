@@ -44,20 +44,7 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadPdf(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty() || !file.getContentType().equals("application/pdf")) {
-            return new ResponseEntity<>("Invalid file. Please upload a PDF file.", HttpStatus.BAD_REQUEST);
-        }
 
-        try {
-            // Process the PDF file (save it, read it, etc.)
-            String message = employeeService.processPdf(file);
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>("Error processing the file", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
 
 }
