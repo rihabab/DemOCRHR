@@ -1,6 +1,5 @@
 package com.ocrrh.ocr.controllers;
 
-import com.ocrrh.ocr.services.EmployeeService;
 import com.ocrrh.ocr.services.HRdocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
